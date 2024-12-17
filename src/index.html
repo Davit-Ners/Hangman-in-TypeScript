@@ -1,11 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeu du pendu</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="../dist/script.js"></script>
 </head>
+
 <body>
-    
+    <header>
+        <h1>Le Jeu Du Pendu</h1>
+        <img src="../img/pendu.png" alt="">
+    </header>
+
+    <body>
+
+        <button id="btn-validation">ICI</button>
+
+        <p id="chances"></p>
+
+        <div class="containerJeu">
+
+            <div class="zonePendu">
+
+                <p id="mot-a-trouver">_ _ _ _ _</p>
+
+                <div id="pendu" class="pendu">
+                    <img src="../img/pendu.png" alt="">
+                </div>
+
+            </div>
+
+            <div id="zone-ecriture" class="zoneEcriture">
+
+            </div>
+            
+        </div>
+    </body>
 </body>
+
 </html>
