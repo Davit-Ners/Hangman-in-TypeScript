@@ -6,7 +6,8 @@ const zoneMotCache: HTMLParagraphElement = document.getElementById('mot-a-trouve
 const pendu: HTMLDivElement = document.getElementById('pendu') as HTMLDivElement;
 const zoneEcriture: HTMLDivElement = document.getElementById('zone-ecriture') as HTMLDivElement;
 const chanceRestantesP: HTMLParagraphElement = document.getElementById('chances') as HTMLParagraphElement;
-const img : HTMLImageElement = document.getElementById('img') as HTMLImageElement;
+const img: HTMLImageElement = document.getElementById('img') as HTMLImageElement;
+const victoire: HTMLImageElement = document.getElementById('victoire') as HTMLImageElement;
 
 // Let et Const
 
@@ -70,15 +71,24 @@ const mots: string[] = [
 ];
 
 
-let chance = 6;
-chanceRestantesP.textContent = chance.toString();
-const motCache = getMot();
-const tabMot = motCache.split('');
-const tabCache = getTirets();
+let chance: number;
+let motCache: string;
+let tabMot: string[];
+let tabCache: string[];
 
 // Fonctions
 
 function placerLettres(): void {
+    victoire.style.display = 'none';
+    zoneEcriture.innerHTML = '';
+    chance = 6;
+    img.src = `../img/etape${chance}.png`;
+    chanceRestantesP.textContent = `${chance.toString()} chances restantes`;
+    motCache = getMot();
+    tabMot = motCache.split('');
+    tabCache = getTirets();
+    zoneMotCache.textContent = tabCache.join(' ');
+
     for (let lettre of alphabet) {
         const btnLettre = document.createElement('button');
         btnLettre.setAttribute('id', lettre);
@@ -89,7 +99,7 @@ function placerLettres(): void {
 }
 
 function getMot(): string {
-    return 'commerrrage';
+    return mots[Math.floor(Math.random() * mots.length)];
 }
 
 // Fonction pour avoir un tableau de tirets pour le mot caché a afficher
@@ -121,18 +131,28 @@ function game(btn: HTMLButtonElement): void {
     }
     else {
         chance--;
-        chanceRestantesP.textContent = chance.toString();
+        chanceRestantesP.textContent = `${chance.toString()} chances restantes`;
         btn.removeEventListener('click', function () { game(btn) });
         btn.remove();
         img.src = `../img/etape${chance}.png`;
     }
     if (chance == 0) {
-
+        zoneEcriture.innerHTML = '';
+        zoneMotCache.textContent = `Perdu ! Le mot caché était "${motCache}"`;
+        const btnRelancer: HTMLButtonElement = document.createElement('button');
+        btnRelancer.textContent = 'Click ici pour relancer une partie !';
+        zoneEcriture.innerHTML = '';
+        zoneEcriture.append(btnRelancer);
+        btnRelancer.addEventListener('click', function () { placerLettres() });
     }
     if (tabMot.length == 0) {
-        alert('gagné');
+        victoire.style.display = 'block';
+        const btnRelancer: HTMLButtonElement = document.createElement('button');
+        btnRelancer.textContent = 'Click ici pour relancer une partie !';
+        zoneEcriture.innerHTML = '';
+        zoneEcriture.append(btnRelancer);
+        btnRelancer.addEventListener('click', function () { placerLettres() });
     }
 }
 
 placerLettres();
-zoneMotCache.textContent = tabCache.join(' ');
