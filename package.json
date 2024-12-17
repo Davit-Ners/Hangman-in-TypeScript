@@ -1,0 +1,14 @@
+{
+  "name": "exots",
+  "version": "1.0.0",
+  "description": "Exercice du jeu du pendu en TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Davit Ners",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}
