@@ -93,6 +93,7 @@ function placerLettres(): void {
         const btnLettre = document.createElement('button');
         btnLettre.setAttribute('id', lettre);
         btnLettre.textContent = lettre;
+        btnLettre.className = 'bttn';
         zoneEcriture.append(btnLettre);
         btnLettre.addEventListener('click', function () { game(btnLettre) });
     }
