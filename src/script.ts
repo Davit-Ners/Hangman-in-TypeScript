@@ -6,6 +6,7 @@ const zoneMotCache: HTMLParagraphElement = document.getElementById('mot-a-trouve
 const pendu: HTMLDivElement = document.getElementById('pendu') as HTMLDivElement;
 const zoneEcriture: HTMLDivElement = document.getElementById('zone-ecriture') as HTMLDivElement;
 const chanceRestantesP: HTMLParagraphElement = document.getElementById('chances') as HTMLParagraphElement;
+const img : HTMLImageElement = document.getElementById('img') as HTMLImageElement;
 
 // Let et Const
 
@@ -13,6 +14,61 @@ const alphabet: string[] = [
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
     'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
 ];
+
+// Mots
+const mots: string[] = [
+    "avion",
+    "ordinateur",
+    "maison",
+    "voiture",
+    "chat",
+    "chien",
+    "ordinateur",
+    "fenetre",
+    "foret",
+    "plage",
+    "soleil",
+    "lune",
+    "arbre",
+    "montagne",
+    "mer",
+    "papillon",
+    "fleur",
+    "vache",
+    "cheval",
+    "pomme",
+    "banane",
+    "orange",
+    "cerise",
+    "fraise",
+    "reine",
+    "roi",
+    "princesse",
+    "pirate",
+    "aventure",
+    "histoire",
+    "legende",
+    "magie",
+    "sort",
+    "etoile",
+    "nuage",
+    "drapeau",
+    "paysage",
+    "montagne",
+    "cascade",
+    "riviere",
+    "ciel",
+    "pluie",
+    "neige",
+    "tempete",
+    "volcan",
+    "ile",
+    "ocean",
+    "bateau",
+    "chateau",
+    "espace"
+];
+
 
 let chance = 6;
 chanceRestantesP.textContent = chance.toString();
@@ -68,9 +124,10 @@ function game(btn: HTMLButtonElement): void {
         chanceRestantesP.textContent = chance.toString();
         btn.removeEventListener('click', function () { game(btn) });
         btn.remove();
+        img.src = `../img/etape${chance}.png`;
     }
     if (chance == 0) {
-        alert('perdu');
+
     }
     if (tabMot.length == 0) {
         alert('gagné');

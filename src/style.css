@@ -27,9 +27,18 @@ body {
     align-items: center;
     justify-content: center;
     border: 2px solid black;
+    padding: 2em;
+}
+
+.pendu {
+    border: 2px solid black;
+    width: 150px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     img {
-        width: 200px;
-        /* visibility: hidden; */
+        object-fit: cover;
     }
 }
 
