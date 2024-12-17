@@ -38,3 +38,7 @@ body {
     flex-direction: column-reverse;
     align-items: center;
 }
+
+#mot-a-trouver {
+    font-size: xx-large;
+}
