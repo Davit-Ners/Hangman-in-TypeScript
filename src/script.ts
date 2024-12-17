@@ -15,6 +15,10 @@ const alphabet: string[] = [
 ];
 
 let chance = 6;
+chanceRestantesP.textContent = chance.toString();
+const motCache = getMot();
+const tabMot = motCache.split('');
+const tabCache = getTirets();
 
 // Fonctions
 
@@ -24,6 +28,7 @@ function placerLettres(): void {
         btnLettre.setAttribute('id', lettre);
         btnLettre.textContent = lettre;
         zoneEcriture.append(btnLettre);
+        btnLettre.addEventListener('click', function () { game(btnLettre) });
     }
 }
 
@@ -31,4 +36,31 @@ function getMot(): string {
     return 'comme';
 }
 
+function getTirets() : string[] {
+    const tableau : string[] = [];
+    for (let lettre of tabMot) {
+        tableau.push('_');
+    }
+    return tableau;
+}
+
+function game(btn: HTMLButtonElement): void {
+    let lettre: string = btn.textContent!;
+    if (tabMot.includes(lettre)) {
+        while (tabMot.indexOf(lettre) != -1) {
+            tabMot.splice(tabMot.indexOf(lettre), 1);
+            console.log(tabMot);
+        }
+        btn.removeEventListener('click', function () {game(btn)});
+        btn.remove();
+    }
+    else {
+        chance--;
+        chanceRestantesP.textContent = chance.toString();
+        btn.removeEventListener('click', function () {game(btn)});
+        btn.remove();
+    }
+}
+
 placerLettres();
+zoneMotCache.textContent = getTirets().join(' ');
