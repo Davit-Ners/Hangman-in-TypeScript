@@ -5,6 +5,7 @@ header {
     align-items: center;
     background-color: darkgray;
     padding: 10px;
+
     img {
         width: 200px;
     }
@@ -38,6 +39,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+
     img {
         object-fit: cover;
     }
@@ -53,17 +55,26 @@ body {
     font-size: xx-large;
 }
 
-#chances {
-    text-align: center;
-    font-size: xx-large;
-}
-
 @keyframes bouge {
-    0% {top: 100px;}
-    25% {top: 0;}
-    50% {top: 100px;}
-    50% {top: 0;}
-    100% {top: 100px;}
+    0% {
+        top: 100px;
+    }
+
+    25% {
+        top: 0;
+    }
+
+    50% {
+        top: 100px;
+    }
+
+    50% {
+        top: 0;
+    }
+
+    100% {
+        top: 100px;
+    }
 }
 
 .victoire {
@@ -84,4 +95,18 @@ body {
 .bttn {
     width: 30px;
     height: 20px;
+}
+
+.score {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    p {
+        text-align: center;
+        font-size: xx-large;
+    }
 }

@@ -8,6 +8,7 @@ const zoneEcriture: HTMLDivElement = document.getElementById('zone-ecriture') as
 const chanceRestantesP: HTMLParagraphElement = document.getElementById('chances') as HTMLParagraphElement;
 const img: HTMLImageElement = document.getElementById('img') as HTMLImageElement;
 const victoire: HTMLImageElement = document.getElementById('victoire') as HTMLImageElement;
+const scoreAffile: HTMLParagraphElement = document.getElementById('score-affile') as HTMLParagraphElement;
 
 // Let et Const
 
@@ -75,6 +76,7 @@ let chance: number;
 let motCache: string;
 let tabMot: string[];
 let tabCache: string[];
+let score: number = 0;
 
 // Fonctions
 
@@ -84,6 +86,7 @@ function placerLettres(): void {
     chance = 6;
     img.src = `../img/etape${chance}.png`;
     chanceRestantesP.textContent = `${chance.toString()} chances restantes`;
+    scoreAffile.textContent = `Vous avez pour l'instant un total de ${score} victoires d'affilés`;
     motCache = getMot();
     tabMot = motCache.split('');
     tabCache = getTirets();
@@ -138,6 +141,11 @@ function game(btn: HTMLButtonElement): void {
         img.src = `../img/etape${chance}.png`;
     }
     if (chance == 0) {
+        if (score > 0) {
+            score = 0;
+            scoreAffile.textContent = `Haha ! Vous retombez à ${score} victoires d'affilés`;
+        }
+        score = 0;
         zoneEcriture.innerHTML = '';
         zoneMotCache.textContent = `Perdu ! Le mot caché était "${motCache}"`;
         const btnRelancer: HTMLButtonElement = document.createElement('button');
@@ -147,6 +155,7 @@ function game(btn: HTMLButtonElement): void {
         btnRelancer.addEventListener('click', function () { placerLettres() });
     }
     if (tabMot.length == 0) {
+        score++;
         victoire.style.display = 'block';
         const btnRelancer: HTMLButtonElement = document.createElement('button');
         btnRelancer.textContent = 'Click ici pour relancer une partie !';
