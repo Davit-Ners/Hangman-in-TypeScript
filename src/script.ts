@@ -9,6 +9,7 @@ const chanceRestantesP: HTMLParagraphElement = document.getElementById('chances'
 const img: HTMLImageElement = document.getElementById('img') as HTMLImageElement;
 const victoire: HTMLImageElement = document.getElementById('victoire') as HTMLImageElement;
 const scoreAffile: HTMLParagraphElement = document.getElementById('score-affile') as HTMLParagraphElement;
+const gameOver: HTMLImageElement = document.getElementById('game-over') as HTMLImageElement;
 
 // Let et Const
 
@@ -82,6 +83,8 @@ let score: number = 0;
 
 function placerLettres(): void {
     victoire.style.display = 'none';
+    gameOver.style.display = 'none';
+    gameOver.style.animation = '';
     zoneEcriture.innerHTML = '';
     chance = 6;
     img.src = `../img/etape${chance}.png`;
@@ -141,6 +144,8 @@ function game(btn: HTMLButtonElement): void {
         img.src = `../img/etape${chance}.png`;
     }
     if (chance == 0) {
+        gameOver.style.display = 'block';
+        gameOver.style.animation = 'app 2s ease';
         if (score > 0) {
             score = 0;
             scoreAffile.textContent = `Haha ! Vous retombez à ${score} victoires d'affilés`;
