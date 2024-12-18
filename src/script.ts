@@ -120,6 +120,15 @@ function getTirets(): string[] {
     return tableau;
 }
 
+// Fonction pour relancer la partie
+function relancerPartie(): void {
+    const btnRelancer: HTMLButtonElement = document.createElement('button');
+    btnRelancer.textContent = 'Click ici pour relancer une partie !';
+    zoneEcriture.innerHTML = '';
+    zoneEcriture.append(btnRelancer);
+    btnRelancer.addEventListener('click', function () { placerLettres() });
+}
+
 // Fonction lors d'une défaite
 function loose(): void {
     gameOver.style.display = 'block';
@@ -131,22 +140,14 @@ function loose(): void {
     score = 0;
     zoneEcriture.innerHTML = '';
     zoneMotCache.textContent = `Perdu ! Le mot caché était "${motCache}"`;
-    const btnRelancer: HTMLButtonElement = document.createElement('button');
-    btnRelancer.textContent = 'Click ici pour relancer une partie !';
-    zoneEcriture.innerHTML = '';
-    zoneEcriture.append(btnRelancer);
-    btnRelancer.addEventListener('click', function () { placerLettres() });
+    relancerPartie();
 }
 
 // Fonction lors d'une victoire
 function win(): void {
     score++;
     victoire.style.display = 'block';
-    const btnRelancer: HTMLButtonElement = document.createElement('button');
-    btnRelancer.textContent = 'Click ici pour relancer une partie !';
-    zoneEcriture.innerHTML = '';
-    zoneEcriture.append(btnRelancer);
-    btnRelancer.addEventListener('click', function () { placerLettres() });
+    relancerPartie();
 }
 
 
