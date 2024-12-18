@@ -13,10 +13,7 @@ const gameOver: HTMLImageElement = document.getElementById('game-over') as HTMLI
 
 // Let et Const
 
-const alphabet: string[] = [
-    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
-];
+const alphabet: string[] = getAlphabet();
 
 const mots: string[] = [
     "avion",
@@ -104,6 +101,15 @@ function placerLettres(): void {
         zoneEcriture.append(btnLettre);
         btnLettre.addEventListener('click', function () { game(btnLettre) });
     }
+}
+
+// Fonction pour avoir un tableau des lettres de l'alphabet
+function getAlphabet(): string[] {
+    let tabLettres: string[] = [];
+    for (let i = 65; i <= 90; i++) {
+        tabLettres.push(String.fromCharCode(i + 32));
+    }
+    return tabLettres;
 }
 
 // Fonction pour tirer aléatoirement un mot
