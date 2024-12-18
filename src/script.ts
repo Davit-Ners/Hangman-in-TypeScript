@@ -27,8 +27,8 @@ const mots: string[] = [
     "chat",
     "chien",
     "ordinateur",
-    "fenetre",
-    "foret",
+    "fenêtre",
+    "forêt",
     "plage",
     "soleil",
     "lune",
@@ -50,25 +50,25 @@ const mots: string[] = [
     "pirate",
     "aventure",
     "histoire",
-    "legende",
+    "légende",
     "magie",
     "sort",
-    "etoile",
+    "étoile",
     "nuage",
     "drapeau",
     "paysage",
     "montagne",
     "cascade",
-    "riviere",
+    "rivière",
     "ciel",
     "pluie",
     "neige",
-    "tempete",
+    "tempête",
     "volcan",
-    "ile",
-    "ocean",
+    "île",
+    "océan",
     "bateau",
-    "chateau",
+    "château",
     "espace"
 ];
 
@@ -78,6 +78,7 @@ let motCache: string;
 let tabMot: string[];
 let tabCache: string[];
 let score: number = 0;
+let motDouble: string;
 
 // Fonctions
 
@@ -91,7 +92,8 @@ function placerLettres(): void {
     chanceRestantesP.textContent = `${chance.toString()} chances restantes`;
     scoreAffile.textContent = `Vous avez pour l'instant un total de ${score} victoires d'affilés`;
     motCache = getMot();
-    tabMot = motCache.split('');
+    motDouble = motCache.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    tabMot = motDouble.split('');
     tabCache = getTirets();
     zoneMotCache.textContent = tabCache.join(' ');
 
@@ -118,6 +120,14 @@ function getTirets(): string[] {
     return tableau;
 }
 
+// function gotLetter(tab : string[], lettreCache) : number {
+//     for (let lettre of tab) {
+//         if ((lettre.normalize('NFD').replace(/[\u0300-\u036f]/g, '')).includes(lettreCache)) {
+//             return 1;
+//         }
+//     }
+// }
+
 // Fonction principale du jeu
 function game(btn: HTMLButtonElement): void {
     let lettre: string = btn.textContent!;
@@ -125,9 +135,9 @@ function game(btn: HTMLButtonElement): void {
         let found = 0;
         while (tabMot.indexOf(lettre) != -1) {
             console.log(found);
-            const index = motCache.indexOf(lettre, found);
+            const index = motDouble.indexOf(lettre, found);
             found = index;
-            tabCache[index] = lettre;
+            tabCache[index] = motCache[index];
             tabMot.splice(tabMot.indexOf(lettre), 1);
             console.log(tabMot);
             found++;
