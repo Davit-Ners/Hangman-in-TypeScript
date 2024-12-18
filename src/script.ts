@@ -11,6 +11,7 @@ const img: HTMLImageElement = document.getElementById('img') as HTMLImageElement
 const victoire: HTMLImageElement = document.getElementById('victoire') as HTMLImageElement;
 const scoreAffile: HTMLParagraphElement = document.getElementById('score-affile') as HTMLParagraphElement;
 const gameOver: HTMLImageElement = document.getElementById('game-over') as HTMLImageElement;
+const timer: HTMLParagraphElement = document.getElementById('timer') as HTMLParagraphElement;
 
 // Let et Const
 
@@ -75,19 +76,27 @@ let tabMot: string[];
 let tabCache: string[];
 let score: number = 0;
 let motDouble: string;
+let chrono: number = -1;
 
 // Fonctions
 
-// Fonction pour placer les boutons avec les lettres
-function start(): void {
+// Fonction pour reset les paramètres
+function resetDom(): void {
     victoire.style.display = 'none';
     gameOver.style.display = 'none';
     gameOver.style.animation = '';
     zoneEcriture.innerHTML = '';
+    timer.textContent = '00:15';
     chance = 6;
     img.src = `../img/etape${chance}.png`;
     chanceRestantesP.textContent = `${chance.toString()} chances restantes`;
     scoreAffile.textContent = `Vous avez pour l'instant un total de ${score} victoires d'affilés`;
+}
+
+// Fonction pour placer les boutons avec les lettres
+function start(): void {
+    resetDom();
+    
     motCache = getMot();
     motDouble = motCache.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     tabMot = motDouble.split('');
@@ -138,6 +147,8 @@ function relancerPartie(): void {
 
 // Fonction lors d'une défaite
 function loose(): void {
+    clearInterval(chrono);
+    chrono = -1;
     gameOver.style.display = 'block';
     gameOver.style.animation = 'app 2s ease';
     if (score > 0) {
@@ -152,6 +163,8 @@ function loose(): void {
 
 // Fonction lors d'une victoire
 function win(): void {
+    clearInterval(chrono);
+    chrono = -1;
     score++;
     victoire.style.display = 'block';
     relancerPartie();
@@ -171,8 +184,27 @@ function checkSiBonneLettre(lettre: string): void {
     }
 }
 
+// Fonction pour gerer le timer
+function setTimer(): void {
+    let secondesRestantes: number = 15;
+    let secondesEcoules: number = 0;
+    let go: number = Date.now();
+
+    chrono = window.setInterval(function () {
+        secondesEcoules = Math.floor(Date.now() / 1000 - go / 1000);
+        timer.textContent = `00:${String(secondesRestantes - secondesEcoules).padStart(2, '0')}`;
+        if (secondesRestantes - secondesEcoules == 0) {
+            clearInterval(chrono);
+            loose();
+        }
+    }, 1);
+}
+
 // Fonction principale du jeu
 function game(btn: HTMLButtonElement): void {
+    if (chrono == -1) {
+        setTimer();
+    }
     let lettre: string = btn.textContent!;
     if (tabMot.includes(lettre)) {
         checkSiBonneLettre(lettre);
