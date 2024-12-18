@@ -77,6 +77,7 @@ let tabCache: string[];
 let score: number = 0;
 let motDouble: string;
 let chrono: number = -1;
+let secondesRestantes: number = 15;
 
 // Fonctions
 
@@ -86,7 +87,7 @@ function resetDom(): void {
     gameOver.style.display = 'none';
     gameOver.style.animation = '';
     zoneEcriture.innerHTML = '';
-    timer.textContent = '00:15';
+    timer.textContent = `00:${String(secondesRestantes)}`;
     chance = 6;
     img.src = `../img/etape${chance}.png`;
     chanceRestantesP.textContent = `${chance.toString()} chances restantes`;
@@ -109,7 +110,7 @@ function start(): void {
         btnLettre.textContent = lettre;
         btnLettre.className = 'bttn';
         zoneEcriture.append(btnLettre);
-        btnLettre.addEventListener('click', function () { game(btnLettre) });
+        btnLettre.addEventListener('click', game);
     }
 }
 
@@ -186,7 +187,6 @@ function checkSiBonneLettre(lettre: string): void {
 
 // Fonction pour gerer le timer
 function setTimer(): void {
-    let secondesRestantes: number = 15;
     let secondesEcoules: number = 0;
     let go: number = Date.now();
 
@@ -201,22 +201,25 @@ function setTimer(): void {
 }
 
 // Fonction principale du jeu
-function game(btn: HTMLButtonElement): void {
+function game(ev : Event): void {
+
+    const btn = ev.target as HTMLButtonElement;
+
     if (chrono == -1) {
         setTimer();
     }
     let lettre: string = btn.textContent!;
     if (tabMot.includes(lettre)) {
         checkSiBonneLettre(lettre);
-        btn.removeEventListener('click', function () { game(btn) });
-        btn.remove();
+        btn.removeEventListener('click', game);
+        btn.disabled = true;
         zoneMotCache.textContent = tabCache.join(' ');
     }
     else {
         chance--;
         chanceRestantesP.textContent = `${chance.toString()} chances restantes`;
-        btn.removeEventListener('click', function () { game(btn) });
-        btn.remove();
+        btn.removeEventListener('click', game);
+        btn.disabled = true;
         img.src = `../img/etape${chance}.png`;
     }
     if (chance == 0) {
