@@ -14,6 +14,8 @@ const gameOver: HTMLImageElement = document.getElementById('game-over') as HTMLI
 const timer: HTMLParagraphElement = document.getElementById('timer') as HTMLParagraphElement;
 const oneShot: HTMLInputElement = document.getElementById('one-shot') as HTMLInputElement;
 const btnOneShot: HTMLButtonElement = document.getElementById('btn-one-shot') as HTMLButtonElement;
+const plus5: HTMLDivElement = document.getElementById('p5') as HTMLDivElement;
+const moins5: HTMLDivElement = document.getElementById('m5') as HTMLDivElement;
 
 // Let et Const
 
@@ -79,7 +81,7 @@ let tabCache: string[];
 let score: number = 0;
 let motDouble: string;
 let chrono: number = -1;
-let secondesRestantes: number = 15;
+let secondesRestantes: number = 30;
 
 // Fonctions
 
@@ -99,8 +101,9 @@ function resetDom(): void {
 
 // Fonction pour placer les boutons avec les lettres
 function start(): void {
+    secondesRestantes = 30;
     resetDom();
-    
+
     motCache = getMot();
     motDouble = motCache.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     tabMot = motDouble.split('');
@@ -120,7 +123,7 @@ function start(): void {
 }
 
 // Fonction pour le one shot
-function oneShotFunc(ev : Event): void {
+function oneShotFunc(ev: Event): void {
     const btn = ev.target as HTMLButtonElement;
 
     if (oneShot.value.normalize('NFD').replace(/[\u0300-\u036f]/g, '') == motCache.normalize('NFD').replace(/[\u0300-\u036f]/g, '')) {
@@ -212,15 +215,38 @@ function setTimer(): void {
     chrono = window.setInterval(function () {
         secondesEcoules = Math.floor(Date.now() / 1000 - go / 1000);
         timer.textContent = `00:${String(secondesRestantes - secondesEcoules).padStart(2, '0')}`;
-        if (secondesRestantes - secondesEcoules == 0) {
+        if (secondesRestantes - secondesEcoules <= 0) {
+            timer.textContent = `00:00`;
             clearInterval(chrono);
             loose();
         }
     }, 1);
 }
 
+// Fonction +5
+function p5(): void {
+    secondesRestantes += 5;
+    plus5.style.visibility = 'inherit';
+    plus5.style.animation = 'appPointV 1s ease';
+    setTimeout(function () {
+        plus5.style.visibility = 'hidden';
+        plus5.style.animation = '';
+    }, 500);
+}
+
+// Fonction -5
+function m5(): void {
+    secondesRestantes -= 5;
+    moins5.style.visibility = 'inherit';
+    moins5.style.animation = 'appPointR 1s ease';
+    setTimeout(function () {
+        moins5.style.visibility = 'hidden';
+        moins5.style.animation = '';
+    }, 500);
+}
+
 // Fonction principale du jeu
-function game(ev : Event): void {
+function game(ev: Event): void {
 
     const btn = ev.target as HTMLButtonElement;
 
@@ -233,6 +259,7 @@ function game(ev : Event): void {
         btn.removeEventListener('click', game);
         btn.disabled = true;
         zoneMotCache.textContent = tabCache.join(' ');
+        p5();
     }
     else {
         chance--;
@@ -240,6 +267,7 @@ function game(ev : Event): void {
         btn.removeEventListener('click', game);
         btn.disabled = true;
         img.src = `../img/etape${chance}.png`;
+        m5();
     }
     if (chance == 0) {
         loose();
