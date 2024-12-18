@@ -18,7 +18,6 @@ const alphabet: string[] = [
     'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
 ];
 
-// Mots
 const mots: string[] = [
     "avion",
     "ordinateur",
@@ -72,7 +71,6 @@ const mots: string[] = [
     "espace"
 ];
 
-
 let chance: number;
 let motCache: string;
 let tabMot: string[];
@@ -82,6 +80,7 @@ let motDouble: string;
 
 // Fonctions
 
+// Fonction pour placer les boutons avec les lettres
 function placerLettres(): void {
     victoire.style.display = 'none';
     gameOver.style.display = 'none';
@@ -107,6 +106,7 @@ function placerLettres(): void {
     }
 }
 
+// Fonction pour tirer aléatoirement un mot
 function getMot(): string {
     return mots[Math.floor(Math.random() * mots.length)];
 }
@@ -120,13 +120,35 @@ function getTirets(): string[] {
     return tableau;
 }
 
-// function gotLetter(tab : string[], lettreCache) : number {
-//     for (let lettre of tab) {
-//         if ((lettre.normalize('NFD').replace(/[\u0300-\u036f]/g, '')).includes(lettreCache)) {
-//             return 1;
-//         }
-//     }
-// }
+// Fonction lors d'une défaite
+function loose(): void {
+    gameOver.style.display = 'block';
+    gameOver.style.animation = 'app 2s ease';
+    if (score > 0) {
+        score = 0;
+        scoreAffile.textContent = `Haha ! Vous retombez à ${score} victoires d'affilés`;
+    }
+    score = 0;
+    zoneEcriture.innerHTML = '';
+    zoneMotCache.textContent = `Perdu ! Le mot caché était "${motCache}"`;
+    const btnRelancer: HTMLButtonElement = document.createElement('button');
+    btnRelancer.textContent = 'Click ici pour relancer une partie !';
+    zoneEcriture.innerHTML = '';
+    zoneEcriture.append(btnRelancer);
+    btnRelancer.addEventListener('click', function () { placerLettres() });
+}
+
+// Fonction lors d'une victoire
+function win(): void {
+    score++;
+    victoire.style.display = 'block';
+    const btnRelancer: HTMLButtonElement = document.createElement('button');
+    btnRelancer.textContent = 'Click ici pour relancer une partie !';
+    zoneEcriture.innerHTML = '';
+    zoneEcriture.append(btnRelancer);
+    btnRelancer.addEventListener('click', function () { placerLettres() });
+}
+
 
 // Fonction principale du jeu
 function game(btn: HTMLButtonElement): void {
@@ -154,29 +176,10 @@ function game(btn: HTMLButtonElement): void {
         img.src = `../img/etape${chance}.png`;
     }
     if (chance == 0) {
-        gameOver.style.display = 'block';
-        gameOver.style.animation = 'app 2s ease';
-        if (score > 0) {
-            score = 0;
-            scoreAffile.textContent = `Haha ! Vous retombez à ${score} victoires d'affilés`;
-        }
-        score = 0;
-        zoneEcriture.innerHTML = '';
-        zoneMotCache.textContent = `Perdu ! Le mot caché était "${motCache}"`;
-        const btnRelancer: HTMLButtonElement = document.createElement('button');
-        btnRelancer.textContent = 'Click ici pour relancer une partie !';
-        zoneEcriture.innerHTML = '';
-        zoneEcriture.append(btnRelancer);
-        btnRelancer.addEventListener('click', function () { placerLettres() });
+        loose();
     }
-    if (tabMot.length == 0) {
-        score++;
-        victoire.style.display = 'block';
-        const btnRelancer: HTMLButtonElement = document.createElement('button');
-        btnRelancer.textContent = 'Click ici pour relancer une partie !';
-        zoneEcriture.innerHTML = '';
-        zoneEcriture.append(btnRelancer);
-        btnRelancer.addEventListener('click', function () { placerLettres() });
+    else if (tabMot.length == 0) {
+        win();
     }
 }
 
