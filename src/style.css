@@ -21,7 +21,7 @@ body {
 
 .containerJeu {
     width: 80%;
-    height: 300px;
+    height: 350px;
     margin: auto;
     margin-top: 2em;
     display: flex;
@@ -135,4 +135,11 @@ body {
 
 button:disabled {
     background-color: hotpink;
+}
+
+.one-shot {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    margin-left: 50em;
 }

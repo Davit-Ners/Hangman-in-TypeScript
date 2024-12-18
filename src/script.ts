@@ -12,6 +12,8 @@ const victoire: HTMLImageElement = document.getElementById('victoire') as HTMLIm
 const scoreAffile: HTMLParagraphElement = document.getElementById('score-affile') as HTMLParagraphElement;
 const gameOver: HTMLImageElement = document.getElementById('game-over') as HTMLImageElement;
 const timer: HTMLParagraphElement = document.getElementById('timer') as HTMLParagraphElement;
+const oneShot: HTMLInputElement = document.getElementById('one-shot') as HTMLInputElement;
+const btnOneShot: HTMLButtonElement = document.getElementById('btn-one-shot') as HTMLButtonElement;
 
 // Let et Const
 
@@ -92,6 +94,7 @@ function resetDom(): void {
     img.src = `../img/etape${chance}.png`;
     chanceRestantesP.textContent = `${chance.toString()} chances restantes`;
     scoreAffile.textContent = `Vous avez pour l'instant un total de ${score} victoires d'affilés`;
+    oneShot.value = '';
 }
 
 // Fonction pour placer les boutons avec les lettres
@@ -111,6 +114,22 @@ function start(): void {
         btnLettre.className = 'bttn';
         zoneEcriture.append(btnLettre);
         btnLettre.addEventListener('click', game);
+    }
+
+    btnOneShot.addEventListener('click', oneShotFunc)
+}
+
+// Fonction pour le one shot
+function oneShotFunc(ev : Event): void {
+    const btn = ev.target as HTMLButtonElement;
+
+    if (oneShot.value.normalize('NFD').replace(/[\u0300-\u036f]/g, '') == motCache.normalize('NFD').replace(/[\u0300-\u036f]/g, '')) {
+        btn.removeEventListener('click', oneShotFunc);
+        win();
+    }
+    else {
+        btn.removeEventListener('click', oneShotFunc);
+        loose();
     }
 }
 
