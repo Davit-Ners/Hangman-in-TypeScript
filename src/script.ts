@@ -1,3 +1,4 @@
+// (function() {
 //  Recuperation des elements du DOM
 
 const inputLettre: HTMLInputElement = document.getElementById('input-lettre') as HTMLInputElement;
@@ -78,7 +79,7 @@ let motDouble: string;
 // Fonctions
 
 // Fonction pour placer les boutons avec les lettres
-function placerLettres(): void {
+function start(): void {
     victoire.style.display = 'none';
     gameOver.style.display = 'none';
     gameOver.style.animation = '';
@@ -132,7 +133,7 @@ function relancerPartie(): void {
     btnRelancer.textContent = 'Click ici pour relancer une partie !';
     zoneEcriture.innerHTML = '';
     zoneEcriture.append(btnRelancer);
-    btnRelancer.addEventListener('click', function () { placerLettres() });
+    btnRelancer.addEventListener('click', function () { start() });
 }
 
 // Fonction lors d'une défaite
@@ -156,21 +157,25 @@ function win(): void {
     relancerPartie();
 }
 
+// Fonction pour checker si la lettre cliquée fait parti du mot caché
+function checkSiBonneLettre(lettre: string): void {
+    let found = 0;
+    while (tabMot.indexOf(lettre) != -1) {
+        console.log(found);
+        const index = motDouble.indexOf(lettre, found);
+        found = index;
+        tabCache[index] = motCache[index];
+        tabMot.splice(tabMot.indexOf(lettre), 1);
+        console.log(tabMot);
+        found++;
+    }
+}
 
 // Fonction principale du jeu
 function game(btn: HTMLButtonElement): void {
     let lettre: string = btn.textContent!;
     if (tabMot.includes(lettre)) {
-        let found = 0;
-        while (tabMot.indexOf(lettre) != -1) {
-            console.log(found);
-            const index = motDouble.indexOf(lettre, found);
-            found = index;
-            tabCache[index] = motCache[index];
-            tabMot.splice(tabMot.indexOf(lettre), 1);
-            console.log(tabMot);
-            found++;
-        }
+        checkSiBonneLettre(lettre);
         btn.removeEventListener('click', function () { game(btn) });
         btn.remove();
         zoneMotCache.textContent = tabCache.join(' ');
@@ -190,4 +195,5 @@ function game(btn: HTMLButtonElement): void {
     }
 }
 
-placerLettres();
+start();
+// })();
