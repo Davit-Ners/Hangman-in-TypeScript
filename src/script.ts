@@ -92,6 +92,7 @@ function resetDom(): void {
     gameOver.style.animation = '';
     zoneEcriture.innerHTML = '';
     timer.textContent = `00:${String(secondesRestantes)}`;
+    timer.style.color = 'black';
     chance = 6;
     img.src = `../img/etape${chance}.png`;
     chanceRestantesP.textContent = `${chance.toString()} chances restantes`;
@@ -215,6 +216,12 @@ function setTimer(): void {
     chrono = window.setInterval(function () {
         secondesEcoules = Math.floor(Date.now() / 1000 - go / 1000);
         timer.textContent = `00:${String(secondesRestantes - secondesEcoules).padStart(2, '0')}`;
+        if (secondesRestantes - secondesEcoules > 10) {
+            timer.style.color = 'black';
+        }
+        else if (secondesRestantes - secondesEcoules < 10) {
+            timer.style.color = 'red';
+        }
         if (secondesRestantes - secondesEcoules <= 0) {
             timer.textContent = `00:00`;
             clearInterval(chrono);
