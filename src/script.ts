@@ -16,6 +16,7 @@ const oneShot: HTMLInputElement = document.getElementById('one-shot') as HTMLInp
 const btnOneShot: HTMLButtonElement = document.getElementById('btn-one-shot') as HTMLButtonElement;
 const plus5: HTMLDivElement = document.getElementById('p5') as HTMLDivElement;
 const moins5: HTMLDivElement = document.getElementById('m5') as HTMLDivElement;
+const scoreTotal: HTMLParagraphElement = document.getElementById('score-total') as HTMLParagraphElement;
 
 // Let et Const
 
@@ -82,6 +83,7 @@ let score: number = 0;
 let motDouble: string;
 let chrono: number = -1;
 let secondesRestantes: number = 30;
+let nbPoints: number = 0;
 
 // Fonctions
 
@@ -104,6 +106,7 @@ function resetDom(): void {
 function start(): void {
     secondesRestantes = 30;
     resetDom();
+    scoreTotal.textContent = `${nbPoints} pts`;
 
     motCache = getMot();
     motDouble = motCache.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -129,10 +132,15 @@ function oneShotFunc(ev: Event): void {
 
     if (oneShot.value.normalize('NFD').replace(/[\u0300-\u036f]/g, '') == motCache.normalize('NFD').replace(/[\u0300-\u036f]/g, '')) {
         btn.removeEventListener('click', oneShotFunc);
+        nbPoints += 20;
+        if (score > 0) {
+            nbPoints *= score;
+        }
         win();
     }
     else {
         btn.removeEventListener('click', oneShotFunc);
+        nbPoints = 0;
         loose();
     }
 }
@@ -267,6 +275,7 @@ function game(ev: Event): void {
         btn.disabled = true;
         zoneMotCache.textContent = tabCache.join(' ');
         p5();
+        nbPoints += 2;
     }
     else {
         chance--;
@@ -280,8 +289,13 @@ function game(ev: Event): void {
         loose();
     }
     else if (tabMot.length == 0) {
+        nbPoints += 10;
+        if (score > 0) {
+            nbPoints *= score;
+        }
         win();
     }
+    scoreTotal.textContent = `${nbPoints} pts`;
 }
 
 start();
